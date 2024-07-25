@@ -3,6 +3,7 @@ package updated.atminterface.servlets;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,12 @@ import updated.atminterface.dao.UserDao;
 public class WithdrawServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/withdraw.jsp");
+        dispatcher.forward(request, response);
+    }
+    
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -24,7 +31,8 @@ public class WithdrawServlet extends HttpServlet {
             boolean success = userDao.withdraw(userId, amount);
 
             if (success) {
-                response.sendRedirect("mainMenu.jsp");
+                request.setAttribute("message", "Withdrawal successful.");
+                request.getRequestDispatcher("/WEB-INF/views/withdraw.jsp").forward(request, response);
             } else {
                 request.setAttribute("error", "Insufficient funds.");
                 request.getRequestDispatcher("/WEB-INF/views/withdraw.jsp").forward(request, response);

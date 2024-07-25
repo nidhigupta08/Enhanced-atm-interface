@@ -34,6 +34,7 @@ public class LoginServlet extends HttpServlet {
         if (isValidUser) {
             // If valid, set session attributes and forward to main menu
             request.getSession().setAttribute("userId", userId);
+            request.setAttribute("message", "Login successful.");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/mainMenu.jsp");
             dispatcher.forward(request, response); // Forward to the JSP for main menu
         } else {
